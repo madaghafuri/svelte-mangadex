@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import type { ChapterData } from "../types/chapter";
 	import { baseUrl, type MangaByIdResponse, type MangaResponse } from "../types/manga";
+	import ImageSkeleton from "./image-skeleton.svelte";
 
     export let chapter: ChapterData;
     let manga: MangaByIdResponse;
@@ -23,7 +24,7 @@
     <div class="flex gap-2">
         <div>
             {#if manga}
-            <img class="rounded-md" src="https://uploads.mangadex.org/covers/{manga.data.id}/{manga.data.relationships.find(value => value.type === 'cover_art')?.attributes.fileName}" alt="Manga Cover" width="64">    
+            <img class="rounded-md" width="64" src="https://uploads.mangadex.org/covers/{manga.data.id}/{manga.data.relationships.find(value => value.type === 'cover_art')?.attributes.fileName}" alt="Cover Art">
             {/if}
         </div>
         <div class="flex flex-col grow">

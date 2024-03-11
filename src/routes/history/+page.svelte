@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { baseUrl, type ReadingHistory } from "../../types/manga";
+	import { baseUrl } from "../../types/manga";
 	import type { ChapterResponse, MangaHistory } from "../../types/chapter";
-	import Card from "../../components/card.svelte";
-	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
+	import Card from "../../components/card.svelte";	
 
     let data: ChapterResponse | undefined;
 
@@ -13,6 +11,14 @@
 
         const chapterParams = new URLSearchParams();
         chapterParams.append('includes[]', 'manga');
+        chapterParams.append('limit', '100')
+        chapterParams.append('order[readableAt]', 'desc')
+
+        // this is necessary
+        const contentRating = ['safe', 'suggestive', 'erotica', 'pornographic'];
+        contentRating.forEach((val) => {
+            chapterParams.append('contentRating[]', val)
+        })
         chapters.forEach((value) => {
             chapterParams.append('ids[]', value)
         })
@@ -28,18 +34,19 @@
         const flatData = parsedData.flatMap((value) => value.chapters);
 
         const chapters = await getChapters(flatData);
-        console.log(chapters);
         data = chapters
     })
 
     function prevPage() {
-        console.log($page)
+        history.back();
     }
 </script>
 
 <div class="min-h-screen p-5">
     <section class="flex items-center gap-10">
-        <i class="fa-solid fa-arrow-left" on:click={prevPage}></i>
+        <button type="button" on:click={prevPage}>
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
         <h1 class="text-2xl font-semibold">Reading History</h1>
     </section>
     <div class="mt-5">

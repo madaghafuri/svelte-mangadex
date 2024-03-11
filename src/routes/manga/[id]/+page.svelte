@@ -62,6 +62,7 @@
         const parsedData = history && JSON.parse(history) as MangaHistory[];
         const updatedData: MangaHistory = {chapters: chapterId, created_at: new Date().toUTCString(), updated_at: ""}
         parsedData && parsedData.unshift(updatedData);
+        console.log(parsedData)
         localStorage.setItem('history', JSON.stringify(parsedData))
     }
 </script>
@@ -87,7 +88,7 @@
                             <h5 class="text-lg">{''}</h5>
                         </div>
                     </section>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 overflow-hidden">
                         {#each getGenre(manga) as genre}
                             <Tag title={genre.attributes.name.en} />
                         {/each}
